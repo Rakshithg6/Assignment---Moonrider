@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: identity-recon
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: identity-recon
+  template:
+    metadata:
+      labels:
+        app: identity-recon
+    spec:
+      containers:
+      - name: identity-recon
+        image: identity-recon:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: DB_URL
+          value: sqlite:///./contacts.db
+        readinessProbe:
+          httpGet:
+            path: /identify
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+          requests:
+            cpu: "200m"
+            memory: "256Mi"

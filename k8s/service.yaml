@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: identity-recon
+spec:
+  selector:
+    app: identity-recon
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
+  type: ClusterIP
